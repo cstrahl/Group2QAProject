@@ -1,56 +1,90 @@
 package com.group2.tqa;
 
 import com.group2.tqa.database.CSVDatabase;
-import com.opencsv.CSVReader;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.nio.file.Files;
 
+import static com.group2.tqa.config.DatabaseConfig.FILE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class TqaApplicationTests {
 
-	// this tests for the first requirement (system can locate and open the .csv file)
-	@Test
-	void test1() throws FileNotFoundException {
-		// this tests that the file can be located and opened
-		File file = new File("test.csv");
-		assertEquals(true, file.canExecute());
-	}
+    @Autowired
+    private CSVDatabase database;
 
-	// this tests for the second requirement (system can search/read the .csv file)
-	@Test
-	void test2(){
-		File file = new File("test.csv");
-		// tests that the file can be read
-		assertEquals(true,Files.isReadable(file.toPath()));
+    // this tests for the first requirement (system can locate, open, and read the .csv file)
+    // Addresses R1, R1.1, R1.2
+    @Test
+    void testCSVFileCanBeOpenedReadAndWrittenTo() {
+        // this tests that the file can be located and opened and Read
+        assertTrue(FILE.canExecute());
+        assertTrue(Files.isReadable(FILE.toPath()));
+        assertTrue(Files.isWritable(FILE.toPath()));
+    }
 
-		// create an instance of the CSVDatabase to use its search methods
-		CSVDatabase database = new CSVDatabase(file);
-		// methods return null by default since there is no code being implemented for milestone 2
-		// search methods with no parameters are for default searches with no user input (i.e. user wants to look at ALL schools)
-		assertEquals(null, database.searchSchools());
-		assertEquals(null, database.searchSchools(new String[] {"KSU, GT, UGA"}));
-		assertEquals(null, database.searchResearch());
-		assertEquals(null, database.searchResearch(new String[] {"AI, machine learning"}));
-		assertEquals(null, database.searchClasses());
-		assertEquals(null, database.searchClasses(new String[] {"CS 3305, CS 3502, CS 3503"}));
-	}
+    // Addresses R2.2
+    @Test
+    void testCanGetAndSearchSchools() {
+        // search methods with no parameters are for default searches with no user input
+        // 	(i.e. user wants to look at ALL schools)
+        assertTrue(this.database.searchSchools().size() >= 5);
+        assertEquals(1, this.database.searchSchools(new String[]{"Kennesaw"}).size());
+        assertEquals(1, this.database.searchSchools(new String[]{"Kennesaw State University"}).size());
+        assertTrue(this.database.searchSchools(new String[]{"Georgia"}).size() >= 5);
 
-	// this tests for the third requirement (system can add a research project/course if it doesn't already exist)
-	@Test
-	void test3(){
-		File file = new File("test.csv");
-		// tests that data can be written to the file
-		assertEquals(true,Files.isWritable(file.toPath()));
 
-		CSVDatabase database = new CSVDatabase(file);
-		// tests if a project with a name of 'machine learning' already exists
-		assertEquals(true, database.exists("Project", "machine learning"));
-	}
+        assertEquals(null, this.database.searchClasses());
+        assertEquals(null, this.database.searchClasses(new String[]{"CS 3305, CS 3502, CS 3503"}));
+    }
+
+    // Address R2.3
+    @Test
+    void testCanGetAndSearchResearch() {
+        assertTrue(this.database.searchResearch().size() >= 10);
+        assertTrue(this.database.searchResearch(new String[]{"Widdershins"}).isEmpty());
+        assertEquals(1, this.database.searchResearch(new String[]{"CCSV Research Project"}).size());
+        assertEquals(1, this.database.searchResearch(new String[]{"Jaylim Gilliam"}).size());
+//
+//		After searching for Kennesaw State University, requesting statistics should return a result list
+//		of at least 10 projects. One project should be the CCSV Research Project. It should have the
+//		following characteristics:
+//			Two universities connected to it (Kennesaw State University and Georgia Highlands College)
+//			At least 3 faculty members connected to it
+//			“Engineering”, “Computer Science”, and “Architecture” subjects connected to it
+//			$2 million dollars in funding is attached to the research project
+
+//		List<String[]> result = this.database.searchResearch(new String[]{"Kennesaw State University"});
+//		assertEquals(10, result.size());
+//		result.forEach(array -> Arrays.asList(array)
+//						.stream()
+//						.filter(str -> ((String) str).equals("CCSV Research Project"))
+//				.collect(Collectors.toList()));
+    }
+
+    // Addresses R2.4
+    @Test
+    void testCanGetAndSearchClasses() {
+        assertFalse(this.database.searchClasses().isEmpty());
+		assertFalse(this.database.searchClasses(new String[]{"CS 3305, CS 3502, CS 3503"}).isEmpty());
+    }
+
+    // this tests for the third requirement (system can add a research project/course if it doesn't already exist)
+    // Addresses R3, R3.1, R3.2
+    @Test
+    void test3() {
+
+        // tests if a project with a name of 'machine learning' already exists
+        assertEquals(true, this.database.exists("Project", "machine learning"));
+    }
+
+    @Test
+    void test4() {
+
+    }
 }

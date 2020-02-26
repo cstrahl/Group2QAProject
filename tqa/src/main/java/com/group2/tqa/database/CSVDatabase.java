@@ -1,47 +1,26 @@
 package com.group2.tqa.database;
 
-import java.io.File;
+import java.util.List;
 
-// this is an object that will contain an instance of a CSVReader from the OpenCSV library
-// since a CSVReader doesn't contain a search by default (only a read) this object will implement search methods
-public class CSVDatabase {
-
-    public CSVDatabase(File file){
-    }
-
+public interface CSVDatabase {
     // these methods allows a user to search schools, research, and classes WITH NO input
-    public String searchSchools(){
-        return null;
-    }
+    List<String[]> searchSchools();
 
-    public String searchResearch(){
-        return null;
-    }
-    public String searchClasses(){
-        return null;
-    }
+    List<String[]> searchResearch();
+
+    List<String[]> searchClasses();
 
     // these methods allows a user to search schools, research, and classes WITH input
-    public String[] searchSchools(String[] search){
-        return null;
-    }
+    List<String[]> searchSchools(String[] search);
 
-    public String[] searchResearch(String[] search){
-        return null;
-    }
-    public String[] searchClasses(String[] search){
-        return null;
-    }
+    List<String[]> searchResearch(String[] search);
+
+    List<String[]> searchClasses(String[] search);
 
     // this checks if something already exists (valid types would be "Project","Course", etc.)
-    public boolean exists(String type, String name){
-        return true;
-    }
+    boolean exists(String type, String name);
 
-    public void addCourse(String name){
-    }
+    void addCourse(String name);
 
-    public void addProject(String name){
-    }
-
+    void addProject(String name);
 }
