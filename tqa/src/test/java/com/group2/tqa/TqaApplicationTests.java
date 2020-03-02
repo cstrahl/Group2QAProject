@@ -4,12 +4,15 @@ import com.group2.tqa.database.CSVDatabase;
 import com.group2.tqa.entities.OfferedClass;
 import com.group2.tqa.entities.Project;
 import com.group2.tqa.entities.School;
+import com.group2.tqa.entities.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.nio.file.Files;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.group2.tqa.config.DatabaseConfig.FILE;
 import static org.junit.jupiter.api.Assertions.*;
@@ -61,12 +64,20 @@ class TqaApplicationTests {
 //			“Engineering”, “Computer Science”, and “Architecture” subjects connected to it
 //			$2 million dollars in funding is attached to the research project
 
-//		List<String[]> result = this.database.searchResearch(new String[]{"Kennesaw State University"});
-//		assertEquals(10, result.size());
-//		result.forEach(array -> Arrays.asList(array)
-//						.stream()
-//						.filter(str -> ((String) str).equals("CCSV Research Project"))
-//				.collect(Collectors.toList()));
+		List<Project> result = this.database.searchResearch(new String[]{"Kennesaw State University"});
+		assertTrue(result.size() >= 10);
+        List<Project> filteredResults = result.stream().filter(project -> project.getName().equals("CCSV Research Project")).collect(Collectors.toList());
+        assertEquals(1, filteredResults.size());
+
+        Project project = filteredResults.get(0);
+        assertEquals(2, project.getSchools().size());
+        assertTrue(project.getFaculty().size() >= 3);
+        assertEquals(2000000.00, project.getFunding());
+
+        Stream<Tag> stream = project.getSubjects().stream();
+        assertTrue(stream.anyMatch(tag -> tag.getName().equals("Engineering")));
+        assertTrue(stream.anyMatch(tag -> tag.getName().equals("Computer Science")));
+        assertTrue(stream.anyMatch(tag -> tag.getName().equals("Architecture")));
     }
 
     // Addresses R2.4
