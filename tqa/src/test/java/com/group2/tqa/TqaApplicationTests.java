@@ -1,13 +1,14 @@
 package com.group2.tqa;
 
 import com.group2.tqa.database.CSVDatabase;
+import com.group2.tqa.entities.OfferedClass;
+import com.group2.tqa.entities.Project;
+import com.group2.tqa.entities.School;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.validation.constraints.Null;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.group2.tqa.config.DatabaseConfig.FILE;
@@ -101,13 +102,13 @@ class TqaApplicationTests {
     void testISPSearchSchools() {
         assertNull(this.database.searchSchools(null)); // null input
 
-        List<String[]> emptySearch = this.database.searchSchools(new String[]{""}); // empty search
+        List<School> emptySearch = this.database.searchSchools(new String[]{""}); // empty search
         assertNull(emptySearch);
 
-        List<String[]> allSearch = this.database.searchSchools(); // no input parameters - returns all research
+        List<School> allSearch = this.database.searchSchools(); // no input parameters - returns all research
         assertTrue(allSearch.size() > 0);
 
-        List<String[]> validSearch = this.database.searchSchools(new String[]{"Kennesaw"}); // valid search
+        List<School> validSearch = this.database.searchSchools(new String[]{"Kennesaw"}); // valid search
         assertEquals(1, validSearch.size());
     }
 
@@ -118,13 +119,13 @@ class TqaApplicationTests {
     void testISPSearchResearch() {
         assertNull(this.database.searchResearch(null)); // null input
 
-        List<String[]> emptySearch = this.database.searchResearch(new String[]{""}); // empty search
+        List<Project> emptySearch = this.database.searchResearch(new String[]{""}); // empty search
         assertTrue(emptySearch.isEmpty());
 
-        List<String[]> allSearch = this.database.searchResearch(); // no input parameters - returns all research
+        List<Project> allSearch = this.database.searchResearch(); // no input parameters - returns all research
         assertTrue(allSearch.size() > 0);
 
-        List<String[]> validSearch = this.database.searchResearch(new String[]{"CCSV Research Project"}); // valid search
+        List<Project> validSearch = this.database.searchResearch(new String[]{"CCSV Research Project"}); // valid search
         assertEquals(1, validSearch.size());
     }
 
@@ -136,13 +137,13 @@ class TqaApplicationTests {
 
         assertNull(this.database.searchClasses(null)); // null input
 
-        List<String[]> emptySearch = this.database.searchClasses(new String[]{""}); // empty search
+        List<OfferedClass> emptySearch = this.database.searchClasses(new String[]{""}); // empty search
         assertTrue(emptySearch.isEmpty());
 
-        List<String[]> allSearch = this.database.searchClasses(); // no input parameters - returns all research
+        List<OfferedClass> allSearch = this.database.searchClasses(); // no input parameters - returns all research
         assertTrue(allSearch.size() > 0);
 
-        List<String[]> validSearch = this.database.searchClasses(new String[]{"CS 3305"}); // valid search
+        List<OfferedClass> validSearch = this.database.searchClasses(new String[]{"CS 3305"}); // valid search
         assertEquals(1, validSearch.size());
 
     }
