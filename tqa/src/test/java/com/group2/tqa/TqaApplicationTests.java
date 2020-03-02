@@ -103,7 +103,7 @@ class TqaApplicationTests {
         assertNull(this.database.searchSchools(null)); // null input
 
         List<School> emptySearch = this.database.searchSchools(new String[]{""}); // empty search
-        assertNull(emptySearch);
+        assertTrue(emptySearch.isEmpty());
 
         List<School> allSearch = this.database.searchSchools(); // no input parameters - returns all research
         assertTrue(allSearch.size() > 0);

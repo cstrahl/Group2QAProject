@@ -5,6 +5,7 @@ import com.group2.tqa.entities.Project;
 import com.group2.tqa.entities.School;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 // this is an object that will contain an instance of a CSVReader from the OpenCSV library
@@ -20,7 +21,11 @@ public class NoOpCSVDatabase implements CSVDatabase {
     // these methods allows a user to search schools, research, and classes WITH NO input
     @Override
     public List<School> searchSchools(){
-        return null;
+
+        List<School> schoolList = new ArrayList<>();
+        schoolList.add(new School());
+
+        return schoolList;
     }
 
     @Override
@@ -35,7 +40,22 @@ public class NoOpCSVDatabase implements CSVDatabase {
     // these methods allows a user to search schools, research, and classes WITH input
     @Override
     public List<School> searchSchools(String[] search){
-        return null;
+
+        if(search == null)
+            return null;
+
+        List<School> schoolList = new ArrayList<>();
+
+        for(int i = 0; i < search.length; i++) {
+            switch (search[i].toLowerCase()) {
+                case "":
+                    break;
+                case "kennesaw":
+                    schoolList.add(new School());
+                    break;
+            }
+        }
+        return schoolList;
     }
 
     @Override
