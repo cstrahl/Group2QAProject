@@ -8,7 +8,7 @@ public class Project {
 
     private String name;
 
-    private School school;
+    private List<School> schools;
 
     private List<Person> faculty;
 
@@ -30,12 +30,12 @@ public class Project {
         this.name = name;
     }
 
-    public School getSchool() {
-        return school;
+    public List<School> getSchools() {
+        return schools;
     }
 
-    public void setSchool(School school) {
-        this.school = school;
+    public void setSchools(List<School> schools) {
+        this.schools = schools;
     }
 
     public List<Person> getFaculty() {
