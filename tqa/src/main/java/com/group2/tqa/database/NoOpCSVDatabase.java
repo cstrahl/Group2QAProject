@@ -1,5 +1,9 @@
 package com.group2.tqa.database;
 
+import com.group2.tqa.entities.OfferedClass;
+import com.group2.tqa.entities.Project;
+import com.group2.tqa.entities.School;
+
 import java.io.File;
 import java.util.List;
 
@@ -15,31 +19,31 @@ public class NoOpCSVDatabase implements CSVDatabase {
 
     // these methods allows a user to search schools, research, and classes WITH NO input
     @Override
-    public List<String[]> searchSchools(){
+    public List<School> searchSchools(){
         return null;
     }
 
     @Override
-    public List<String[]> searchResearch(){
+    public List<Project> searchResearch(){
         return null;
     }
     @Override
-    public List<String[]> searchClasses(){
+    public List<OfferedClass> searchClasses(){
         return null;
     }
 
     // these methods allows a user to search schools, research, and classes WITH input
     @Override
-    public List<String[]> searchSchools(String[] search){
+    public List<School> searchSchools(String[] search){
         return null;
     }
 
     @Override
-    public List<String[]> searchResearch(String[] search){
+    public List<Project> searchResearch(String[] search){
         return null;
     }
     @Override
-    public List<String[]> searchClasses(String[] search){
+    public List<OfferedClass> searchClasses(String[] search){
         return null;
     }
 
